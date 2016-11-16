@@ -14,8 +14,9 @@ import rx.android.schedulers.AndroidSchedulers;
  */
 public class TimelinePresenter implements Contract.Presenter {
     private static final String TAG = TimelinePresenter.class.getSimpleName();
-    TwitterService service;
-    Contract.View view;
+
+    private TwitterService service;
+    private Contract.View view;
 
     public TimelinePresenter(TwitterService service, Contract.View view) {
         this.service = service;
@@ -34,12 +35,11 @@ public class TimelinePresenter implements Contract.Presenter {
 
                                @Override
                                public void onError(Throwable e) {
-                                   Log.wtf(TAG, "Exception: " + e.toString());
+                                   Log.e(TAG, "Exception: " + e.toString());
                                }
 
                                @Override
                                public void onNext(List<Timeline> timeline) {
-                                   Log.d(TAG, "received timeline");
                                    if (view == null) {
                                        return;
                                    }
