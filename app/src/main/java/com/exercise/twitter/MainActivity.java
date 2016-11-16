@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
                         invalidateOptionsMenu();
 
                         dialog = null;
+                        presenter.getTimeline();
                     }
                 });
                 dialog.show(getSupportFragmentManager(), "handle");
