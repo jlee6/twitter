@@ -2,7 +2,6 @@ package com.exercise.twitter;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
@@ -31,16 +30,13 @@ public class HandleDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                 .setTitle("Twitter Handle")
                 .setView(view)
-                .setPositiveButton("Set", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        if (input.getText().toString().isEmpty()) {
-                            Toast.makeText(getActivity(), "Must set handle", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-
-                        callback.change(input.getText().toString());
+                .setPositiveButton("Set", (dialogInterface, i) -> {
+                    if (input.getText().toString().isEmpty()) {
+                        Toast.makeText(getActivity(), "Must set handle", Toast.LENGTH_LONG).show();
+                        return;
                     }
+
+                    callback.change(input.getText().toString());
                 });
 
         return builder.create();

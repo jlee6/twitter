@@ -6,15 +6,13 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.2'
-
-        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
     }
 }
 
 allprojects {
     repositories {
-        mavenCentral()
         jcenter()
+        maven { url "https://jitpack.io" }
     }
 }
 

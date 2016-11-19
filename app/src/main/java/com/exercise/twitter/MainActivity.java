@@ -5,11 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.exercise.twitter.api.MockService;
 import com.exercise.twitter.api.TwitterService;
 import com.exercise.twitter.timeline.Contract;
 import com.exercise.twitter.timeline.TimelinePresenter;
@@ -18,7 +16,6 @@ import com.exercise.twitter.timeline.TimelineRVAdapter;
 public class MainActivity extends AppCompatActivity {
     private final String tag = MainActivity.class.getSimpleName();
 
-    private TwitterService service = new MockService();
     private HandleDialog dialog;
 
     private Contract.Presenter presenter;
@@ -33,24 +30,19 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        TimelineRVAdapter adapter  = new TimelineRVAdapter();
+        TimelineRVAdapter adapter = new TimelineRVAdapter();
 
         RecyclerView viewTimeline = (RecyclerView) findViewById(R.id.rv_timeline_list);
         viewTimeline.setAdapter(adapter);
         viewTimeline.setLayoutManager(new LinearLayoutManager(this));
 
-        presenter = new TimelinePresenter(service, adapter);
+        presenter = new TimelinePresenter(new TwitterService(), adapter);
+        presenter.initialize(this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-        if (TextUtils.isEmpty(activeHandle)) {
-            return;
-        }
-
-        presenter.getTimeline();
     }
 
     @Override
@@ -75,15 +67,12 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_handle:
                 dialog = new HandleDialog();
-                dialog.setOnHandleChangedCallback(new HandleDialog.OnHandleChanged() {
-                    @Override
-                    public void change(String result) {
-                        activeHandle = result;
-                        invalidateOptionsMenu();
+                dialog.setOnHandleChangedCallback(result -> {
+                    activeHandle = result;
+                    invalidateOptionsMenu();
 
-                        dialog = null;
-                        presenter.getTimeline();
-                    }
+                    dialog = null;
+                    presenter.getTimeline();
                 });
                 dialog.show(getSupportFragmentManager(), "handle");
                 return true;
