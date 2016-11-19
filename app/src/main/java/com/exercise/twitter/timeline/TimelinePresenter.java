@@ -1,12 +1,10 @@
 package com.exercise.twitter.timeline;
 
+import android.app.Activity;
 import android.util.Log;
 
 import com.exercise.twitter.api.TwitterService;
 
-import java.util.List;
-
-import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 
 /**
@@ -24,27 +22,19 @@ public class TimelinePresenter implements Contract.Presenter {
     }
 
     @Override
+    public void initialize(Activity activity) {
+        service.initialize(activity);
+    }
+
+    @Override
     public void getTimeline() {
         service.getTimeline()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<Timeline>>() {
-                               @Override
-                               public void onCompleted() {
-
-                               }
-
-                               @Override
-                               public void onError(Throwable e) {
-                                   Log.e(TAG, "Exception: " + e.toString());
-                               }
-
-                               @Override
-                               public void onNext(List<Timeline> timeline) {
-                                   if (view == null) {
-                                       return;
-                                   }
-                                   view.updateTimelineList(timeline);
-                               }
-                           });
+                .subscribe(timeline -> {
+                    if (view == null) {
+                        return;
+                    }
+                    view.updateTimelineList(timeline);
+                }, throwable -> Log.e(TAG, throwable.toString()));
     }
 }

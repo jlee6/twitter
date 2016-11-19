@@ -1,5 +1,7 @@
 package com.exercise.twitter.timeline;
 
+import android.app.Activity;
+
 import java.util.List;
 
 /**
@@ -7,6 +9,7 @@ import java.util.List;
  */
 public interface Contract {
     interface Presenter {
+        void initialize(Activity activity);
         void getTimeline();
     }
 

@@ -13,11 +13,11 @@
     tools:context="com.exercise.twitter.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/timeline_swipe_refresh_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:animateLayoutChanges="true">
+    <!--<android.support.v4.widget.SwipeRefreshLayout-->
+    <!--android:id="@+id/timeline_swipe_refresh_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:animateLayoutChanges="true">-->
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_timeline_list"
@@ -25,6 +25,6 @@
             android:layout_height="match_parent"
             android:layout_centerInParent="true"/>
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    <!--</android.support.v4.widget.SwipeRefreshLayout>-->
 
 </RelativeLayout>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Twitter Timeline</string>
+    <string name="app_name">TT_viewer</string>
     <string name="action_handle">Handle</string>
 
     <string name="preference_key">com.exercise.twitter.timeline</string>
