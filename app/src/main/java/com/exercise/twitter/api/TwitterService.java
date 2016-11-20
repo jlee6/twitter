@@ -27,7 +27,7 @@ public class TwitterService {
     private static final String BASE_URL = "https://api.twitter.com/1.1/";
     TwitterAuthentication authenticator;
     private OkHttpClient client;
-    private String handle = "findmyhandle";
+    private String handle;
 
     public TwitterService() {
         authenticator = new TwitterAuthentication();
@@ -60,7 +60,8 @@ public class TwitterService {
         client = new OkHttpClient().newBuilder()
                 .socketFactory(SocketFactory.getDefault())
                 .sslSocketFactory(factory, trust)
-                .addInterceptor(new OAuth1Interceptor(authenticator.getService())).build();
+                .addInterceptor(new OAuth1Interceptor(authenticator.getService()))
+                .build();
     }
 
     private TwitterApi getApi() {
