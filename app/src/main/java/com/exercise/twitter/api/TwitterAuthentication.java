@@ -15,7 +15,6 @@ import rx.Observable;
 public class TwitterAuthentication {
     private OAuth1AccessToken accessToken;
     private OAuth10aService twitterService;
-    private String apiKey;
 
     public TwitterAuthentication() {
     }
@@ -24,19 +23,13 @@ public class TwitterAuthentication {
         return accessToken;
     }
 
-    public String getApiKey() {
-        return apiKey;
-    }
-
     public OAuth10aService getService() {
         return twitterService;
     }
 
     Observable<OAuth1AccessToken> authenticate(Activity activity) {
-        apiKey = activity.getString(R.string.consumer_key);
-
         twitterService = new ServiceBuilder()
-                .apiKey(apiKey)
+                .apiKey(activity.getString(R.string.consumer_key))
                 .apiSecret(activity.getString(R.string.consumer_secret))
                 .callback("")
                 .build(TwitterApi.instance());
