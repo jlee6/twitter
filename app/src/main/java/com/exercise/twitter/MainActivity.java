@@ -8,10 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.View;
 import android.widget.Toast;
 
-import com.exercise.twitter.api.MockService;
 import com.exercise.twitter.api.TwitterService;
 import com.exercise.twitter.timeline.Contract;
 import com.exercise.twitter.timeline.TimelinePresenter;
@@ -35,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         MainActivity.this.setTitle("TT Viewer");
         presenter = new TimelinePresenter(new TwitterService(), adapter);
+//        presenter = new TimelinePresenter(new MockService(), adapter);
 
         presenter.initialize(this);
     }
