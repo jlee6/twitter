@@ -1,6 +1,8 @@
 package com.exercise.twitter.api;
 
 import android.app.Activity;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.exercise.twitter.R;
 import com.github.scribejava.apis.TwitterApi;
@@ -12,18 +14,14 @@ import org.fuckboilerplate.rx_social_connect.RxSocialConnect;
 
 import rx.Observable;
 
-public class TwitterAuthentication {
+class TwitterAuthentication {
     private OAuth1AccessToken accessToken;
     private OAuth10aService twitterService;
 
-    public TwitterAuthentication() {
+    TwitterAuthentication() {
     }
 
-    public OAuth1AccessToken getToken() {
-        return accessToken;
-    }
-
-    public OAuth10aService getService() {
+    OAuth10aService getService() {
         return twitterService;
     }
 
@@ -35,6 +33,18 @@ public class TwitterAuthentication {
                 .build(TwitterApi.instance());
 
         return RxSocialConnect.with(activity, twitterService)
-                .map(response -> accessToken = response.token());
+                .onErrorReturn(throwable -> {
+                    Log.e("Authentication", "Unable to authenticate: " + throwable.toString());
+                    Toast.makeText(activity, "Unable to authenticate user", Toast.LENGTH_LONG)
+                            .show();
+                    return null;
+                })
+                .map(response -> {
+                    if (response != null) {
+                        accessToken = response.token();
+                    }
+
+                    return accessToken;
+                });
     }
 }

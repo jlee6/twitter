@@ -9,8 +9,9 @@ import java.util.List;
  */
 public interface Contract {
     interface Presenter {
+        boolean enabled();
         void initialize(Activity activity);
-        void getTimeline();
+        void getTimeline(String handle);
     }
 
     interface View {

@@ -22,16 +22,21 @@ public class TimelinePresenter implements Contract.Presenter {
     }
 
     @Override
+    public boolean enabled() {
+        return service.enabled();
+    }
+
+    @Override
     public void initialize(Activity activity) {
         service.initialize(activity);
     }
 
     @Override
-    public void getTimeline() {
-        service.getTimeline()
+    public void getTimeline(String handle) {
+        service.getTimeline(handle)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(timeline -> {
-                    if (view == null) {
+                    if (timeline == null || timeline.isEmpty()) {
                         return;
                     }
                     view.updateTimelineList(timeline);
