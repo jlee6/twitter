@@ -13,6 +13,9 @@ public class Timeline {
     @SerializedName("created_at")
     String createdAt;
 
+    @SerializedName("retweeted")
+    boolean retweet;
+
     public Timeline() {
     }
 
@@ -22,5 +25,9 @@ public class Timeline {
 
     public String getCreatedAt() {
         return createdAt;
+    }
+
+    public boolean isRetweet() {
+        return retweet;
     }
 }

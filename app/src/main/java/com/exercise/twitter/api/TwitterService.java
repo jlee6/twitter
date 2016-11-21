@@ -8,6 +8,7 @@ import com.github.scribejava.core.model.OAuth1AccessToken;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.SocketFactory;
 import javax.net.ssl.SSLSocketFactory;
@@ -25,35 +26,40 @@ import rx.schedulers.Schedulers;
 
 public class TwitterService {
     private static final String BASE_URL = "https://api.twitter.com/1.1/";
-    TwitterAuthentication authenticator;
+
+    private TwitterAuthentication authenticator;
     private OkHttpClient client;
-    private String handle;
 
     public TwitterService() {
         authenticator = new TwitterAuthentication();
     }
 
+    public boolean enabled() {
+        return client != null;
+    }
+
     public void initialize(Activity activity) {
-        if (authenticator.getToken() != null) {
-            return;
-        }
-
-        authenticator.authenticate(activity).subscribe(this::createHttpClient);
+        authenticator.authenticate(activity)
+                .subscribe(this::createHttpClient);
     }
 
-    public void setHandle(String handle) {
-        this.handle = handle;
-    }
-
-    public Observable<List<Timeline>> getTimeline() {
+    public Observable<List<Timeline>> getTimeline(String handle) {
         Map<String, String> options = new HashMap<>();
         options.put("screen_name", handle);
         options.put("count", "10");
 
+        if (getApi() == null) {
+            return Observable.just((List<Timeline>) null)
+                    .delay(100, TimeUnit.MILLISECONDS);
+        }
         return getApi().getTimeline(options).subscribeOn(Schedulers.io());
     }
 
     private void createHttpClient(OAuth1AccessToken token) {
+        if (token == null) {
+            return;
+        }
+
         SSLSocketFactory factory = SSLSocketFactoryHelper.getSocketFactory();
         X509TrustManager trust = SSLSocketFactoryHelper.trust;
 
@@ -65,6 +71,10 @@ public class TwitterService {
     }
 
     private TwitterApi getApi() {
+        if (client == null) {
+            return null;
+        }
+
         return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())

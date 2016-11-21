@@ -26,7 +26,9 @@ public class TimelineRVAdapter extends RecyclerView.Adapter implements Contract.
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         TimelineViewHolder vh = (TimelineViewHolder) holder;
-        vh.txtTweetText.setText(timeline.get(position).getText());
+
+        Timeline tl = timeline.get(position);
+        vh.txtTweetText.setText(trimText(tl.getText()));
     }
 
     @Override
@@ -38,6 +40,15 @@ public class TimelineRVAdapter extends RecyclerView.Adapter implements Contract.
     public void updateTimelineList(List<Timeline> timeline) {
         this.timeline = timeline;
         notifyDataSetChanged();
+    }
+
+    // remove the name of retweet user + ": " from text
+    private String trimText(String timelineText) {
+        if (timelineText.startsWith("RT ")) {
+            return timelineText.substring(timelineText.indexOf(':') + 2);
+        }
+
+        return timelineText.trim();
     }
 
     private static class TimelineViewHolder extends RecyclerView.ViewHolder {

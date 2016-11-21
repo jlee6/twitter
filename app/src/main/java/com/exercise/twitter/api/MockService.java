@@ -1,5 +1,7 @@
 package com.exercise.twitter.api;
 
+import android.app.Activity;
+
 import com.exercise.twitter.timeline.Timeline;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -23,10 +25,16 @@ public class MockService extends TwitterService {
             "{\"created_at\": \"Tue Jul 02 11:04:43 +0000 2013\",\n" +
             " \"text\": \"item 5\"}]";
 
-    public Observable<List<Timeline>> getTimeline() {
+    @Override
+    public void initialize(Activity activity) {
+    }
+
+    @Override
+    public Observable<List<Timeline>> getTimeline(String query) {
         return Observable
                 .just((List<Timeline>) new GsonBuilder().create().fromJson(MOCK_DATA, new TypeToken<List<Timeline>>() {
                 }.getType()))
                 .delay(2, TimeUnit.SECONDS);
     }
 }
+
